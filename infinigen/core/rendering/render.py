@@ -200,17 +200,25 @@ def configure_compositor_output(
                     Nodes.CompCombineColor,
                     [0, (separate_color, 3), (separate_color, 2), 0],
                 )
-                nw.links.new(comnbine_color.outputs[0], slot_input)
+                pass_socket = comnbine_color.outputs[0]
             case "normal":
-                color = nw.new_node(
+                pass_socket = nw.new_node(
                     Nodes.CompositorMixRGB,
                     [None, render_socket, (0, 0, 0, 0)],
                     attrs={"blend_type": "ADD"},
                 ).outputs[0]
-                nw.links.new(color, slot_input)
             case _:
-                nw.links.new(render_socket, slot_input)
+                pass_socket = render_socket
+        nw.links.new(pass_socket, slot_input)
         file_slot_list.append(file_output_node.file_slots[slot_input.name])
+
+        # additionally save each pass as linear HDR EXR alongside the PNG (only
+        # when the primary output isn't already EXR, i.e. the beauty render) so
+        # the light passes keep their PNG and also get scene-referred linear data
+        if file_output_node is not file_output_node_exr:
+            exr_slot_input = file_output_node_exr.file_slots.new(socket_name)
+            nw.links.new(pass_socket, exr_slot_input)
+            file_slot_list.append(file_output_node_exr.file_slots[exr_slot_input.name])
 
     slot_input = default_file_output_node.file_slots["Image"]
     image = image_denoised if image_denoised is not None else image_noisy
