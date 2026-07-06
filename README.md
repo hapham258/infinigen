@@ -4,16 +4,20 @@ git submodule update --init
 conda create -n infinigen_all python=3.11
 conda activate infinigen_all
 pip install -e ".[dev,terrain,vis]"
-pre-commit install
 bash scripts/install/interactive_blender.sh
 ```
-Generate a dataset of 5 sequences:
+Generate a dataset of 30 sequences:
 ```
 export OUTPUT_DIR=/media/hapq/EXTRA_DATA/infinigen_stuff/outputs/video_slow_indoor
 python -m infinigen.datagen.manage_jobs --output_folder $OUTPUT_DIR --num_scenes 30 \
 --pipeline_configs local_256GB.gin monocular_video.gin blender_gt.gin indoor_background_configs.gin --configs singleroom \
 --pipeline_overrides get_cmd.driver_script='infinigen_examples.generate_indoors' \
 --overrides compose_indoors.terrain_enabled=False compose_indoors.restrict_single_supported_roomtype=True AnimPolicyRandomWalkLookaround.speed=0.5 AnimPolicyRandomWalkLookaround.step_range=0.5 compose_indoors.animate_cameras_enabled=True
+```
+Copy, compress and convert selected parts of every finished sequence:
+```
+export FMT_OUTPUT_DIR=/media/hapq/TRAINING_DATA/Infinigen_IVR/video_slow_indoor
+python scripts/preprocess/generate_ivr_data.py $OUTPUT_DIR $FMT_OUTPUT_DIR $OUTPUT_DIR/finished_seeds.txt
 ```
 
 <div align="center">
