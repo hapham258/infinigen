@@ -323,6 +323,9 @@ def compose_indoors(output_folder: Path, scene_seed: int, **overrides):
             camera=camera_rigs[0].children[0],
             background_objs=list(pholder_cutters.objects) + list(pholder_rooms.objects),
             collision_objs=list(pholder_objs.objects),
+            # Commit 8ee07e9f (2025-10-16, "Expand floating object code") added an indoor_cutoff parameter and
+            # the index < self.indoor_cutoff tagging logic, but forgot to update generate_indoors.py to pass it
+            indoor_cutoff=len(facs),
         )
 
         placer.place_objs(
