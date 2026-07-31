@@ -373,13 +373,14 @@ def compose_nature(output_folder, scene_seed, **params):
         frames_folder = output_folder.parent / "frames"
         animated_cams = [cam for cam in camera_rigs if cam.animation_data is not None]
 
-        save_imu_tum_data = params.get("save_imu_tum_data")
-        if save_imu_tum_data:
-            frames_folder = output_folder.parent / "frames"
-            animated_cams = [
-                cam for cam in camera_rigs if cam.animation_data is not None
-            ]
-            save_imu_tum_files(frames_folder / "imu_tum", animated_cams)
+        # save_imu_tum_data = params.get("save_imu_tum_data")
+        # if save_imu_tum_data:
+        # Save IMU traj regardless
+        frames_folder = output_folder.parent / "frames"
+        animated_cams = [
+            cam for cam in camera_rigs if cam.animation_data is not None
+        ]
+        save_imu_tum_files(frames_folder / "imu_tum", animated_cams)
 
     p.run_stage(
         "animate_cameras",
