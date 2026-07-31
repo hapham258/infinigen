@@ -28,7 +28,7 @@ python -m infinigen.datagen.manage_jobs --output_folder $OUTPUT_DIR --num_scenes
 ```
 Copy, compress and convert selected parts of every finished sequence:
 ```
-export FMT_OUTPUT_DIR=/media/hapq/TRAINING_DATA/Infinigen_IVR/video_slow_indoor
+export FMT_OUTPUT_DIR=/media/hapq/TRAINING_DATA/InfinigenIVR/video_slow_indoor
 python scripts/preprocess/generate_ivr_data.py $OUTPUT_DIR $FMT_OUTPUT_DIR $OUTPUT_DIR/finished_seeds.txt
 ```
 
