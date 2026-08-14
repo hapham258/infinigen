@@ -7,7 +7,7 @@ pip install -e ".[dev,terrain,vis]"
 pip install "numpy<2" "setuptools<81"
 bash scripts/install/interactive_blender.sh
 ```
-Generate a dataset of 30 sequences (add `--overrides [...] execute_tasks.fps=3` for larger parallax):
+Generate a dataset of 30 sequences (add `--overrides [...] execute_tasks.fps=3` for larger parallax or `--pipeline_overrides [...] iterate_scene_tasks.frame_range=[1,16]` for shorter video):
 ```
 export OUTPUT_DIR=/media/hapq/EXTRA_DATA/infinigen_stuff/outputs/video_slow_indoor
 python -m infinigen.datagen.manage_jobs --output_folder $OUTPUT_DIR --num_scenes 30 \
